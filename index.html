@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asri Energy - Energi Bersih untuk Masa Depan</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"General Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        'lime-accent': '#ccff99',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        html { scroll-behavior: smooth; }
+
+        /* Navbar scrolled state */
+        .nav-scrolled {
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            color: #171717 !important;
+        }
+        .nav-scrolled #navLinks a { color: #525252; }
+        .nav-scrolled #navLinks a:hover { color: #000000; }
+        .nav-scrolled #navLogo img {
+            filter: brightness(0) invert(0); 
+        }
+        .nav-scrolled #navLogo { color: #171717 !important; }
+        .nav-scrolled #navBtn {
+            background-color: #ccff99;
+            color: #171717;
+        }
+
+        /* Burger icon */
+        #burgerBtn span {
+            background-color: white;
+            transition: background-color 0.3s;
+        }
+        .nav-scrolled #burgerBtn span {
+            background-color: #171717;
+        }
+
+        /* Mobile menu overlay */
+        #mobileMenu {
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        #mobileMenu.hidden {
+            display: none;
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.215, 0.610, 0.355, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: all 0.8s cubic-bezier(0.215, 0.610, 0.355, 1);
+        }
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+    </style>
+</head>
+<body class="bg-white text-neutral-900 font-sans antialiased selection:bg-lime-accent selection:text-neutral-950">
+
+    <!-- Navbar -->
+    <nav id="mainNav" class="w-full fixed top-0 left-0 bg-transparent text-white transition-all duration-300 z-50">
+        <div class="max-w-[1600px] mx-auto px-6 sm:px-12 py-6 flex justify-between items-center">
+            
+            <div id="navLogo" class="flex items-center text-xl tracking-wider text-white transition-colors duration-300 font-semibold">
+                <img src="assets/icon.svg" alt="Icon" class="w-8 h-8 transition-all duration-300 invert mr-2">
+                 Asri Energy<span class="text-lime-accent" id="logoDot">.</span>
+            </div>
+
+            <!-- Desktop links -->
+            <div id="navLinks" class="hidden lg:flex space-x-8 text-md tracking-wide text-neutral-300">
+                <a href="#hero" class="hover:text-lime-accent transition">Home</a>
+                <a href="#intro" class="hover:text-lime-accent transition">Visi</a>
+                <a href="#services" class="hover:text-lime-accent transition">Layanan</a>
+                <a href="#portfolio" class="hover:text-lime-accent transition">Portofolio</a>
+                <a href="#news" class="hover:text-lime-accent transition">Berita</a>
+                <a href="#faq" class="hover:text-lime-accent transition">FAQ</a>
+                <a href="#contact" class="hover:text-lime-accent transition">Kontak</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <!-- CTA button (desktop only) -->
+                <a id="navBtn" href="#contact" class="hidden lg:inline-block text-xs tracking-wide bg-white text-neutral-950 px-6 py-3 rounded-2xl hover:bg-lime-accent transition duration-300 shadow-md font-semibold">
+                    Hubungi Kami
+                </a>
+
+                <!-- Burger button (mobile only) -->
+                <button id="burgerBtn" onclick="toggleMobileMenu()" class="lg:hidden flex flex-col justify-center gap-[5px] w-8 h-8 focus:outline-none" aria-label="Toggle Menu">
+                    <span class="block w-6 h-[2px] rounded-full"></span>
+                    <span class="block w-6 h-[2px] rounded-full"></span>
+                    <span class="block w-4 h-[2px] rounded-full"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile menu overlay -->
+    <div id="mobileMenu" class="hidden fixed inset-0 z-[60] bg-neutral-950/95 backdrop-blur-md flex flex-col items-center justify-center gap-8 text-white">
+        <div class="absolute top-6 left-6 text-xl font-semibold text-white tracking-wider">Asri Energy<span class="text-lime-accent">.</span></div>
+        <button onclick="toggleMobileMenu()" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full border border-white/20 text-white/70 hover:text-white hover:border-white/50 transition text-lg" aria-label="Tutup Menu">✕</button>
+        <a href="#hero" onclick="toggleMobileMenu()" class="text-2xl font-semibold hover:text-lime-accent transition">Home</a>
+        <a href="#intro" onclick="toggleMobileMenu()" class="text-2xl font-semibold hover:text-lime-accent transition">Visi</a>
+        <a href="#services" onclick="toggleMobileMenu()" class="text-2xl font-semibold hover:text-lime-accent transition">Layanan</a>
+        <a href="#portfolio" onclick="toggleMobileMenu()" class="text-2xl font-semibold hover:text-lime-accent transition">Portofolio</a>
+        <a href="#news" onclick="toggleMobileMenu()" class="text-2xl font-semibold hover:text-lime-accent transition">Berita</a>
+        <a href="#faq" onclick="toggleMobileMenu()" class="text-2xl font-semibold hover:text-lime-accent transition">FAQ</a>
+        <a href="#contact" onclick="toggleMobileMenu()" class="mt-4 text-xs tracking-wide bg-lime-accent text-neutral-950 px-8 py-4 rounded-2xl font-semibold">Hubungi Kami</a>
+    </div>
+
+    <!-- Hero -->
+    <section id="hero" class="relative w-full h-screen min-h-[600px] flex items-end overflow-hidden bg-transparent">
+        <img src="assets/hero.png" alt="Asri Energy Hero Background" class="absolute inset-0 w-full h-full object-cover object-center z-0 pointer-events-none scale-105 animate-[subtle-zoom_10s_ease-out_forwards]">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-black/15 to-black/45 z-10"></div>
+        
+        <div class="max-w-[1600px] mx-auto w-full px-6 sm:px-12 pb-16 md:pb-24 relative z-20 flex justify-start">
+            <div class="space-y-6 max-w-4xl text-left opacity-0 translate-y-8 animate-[fade-up_1s_cubic-bezier(0.215,0.61,0.355,1)_0.2s_forwards]">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-[2px] bg-lime-accent"></div>
+                    <span class="text-xs tracking-wider text-lime-accent uppercase">Energi Berkelanjutan</span>
+                </div>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.15] text-white font-semibold drop-shadow-md">
+                    Mendorong Transformasi <br><span class="text-lime-accent">Energi Bersih</span>
+                </h1>
+                <p class="text-base sm:text-lg font-normal text-white leading-relaxed max-w-xl drop-shadow-md">
+                    Kami menghadirkan solusi energi bersih yang inovatif, efisien, dan berkelanjutan untuk mendukung transformasi sistem energi yang lebih bertanggung jawab.
+                </p>
+                <div class="pt-2 flex items-center gap-6">
+                    <a href="#intro" class="text-md tracking-wide text-white border-b-2 border-lime-accent pb-1 hover:text-lime-accent transition duration-300 drop-shadow-md">
+                        Jelajahi Lebih Lanjut
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Intro / Visi -->
+    <section id="intro" class="py-24 md:py-32 px-6 sm:px-12 max-w-[1600px] mx-auto grid md:grid-cols-3 gap-8 border-b border-neutral-200 reveal">
+        <div class="md:col-span-1">
+            <span class="text-xs tracking-wider text-neutral-900 block mb-2 uppercase">Visi & Nilai</span>
+            <h2 class="text-3xl tracking-tight text-neutral-900 font-semibold">Energi Bersih dengan Dampak Berkelanjutan</h2>
+        </div>
+        <div class="md:col-span-2 space-y-6">
+            <p class="text-xl md:text-2xl text-neutral-800 font-medium leading-relaxed">
+                Di Asri Energy, kami memandang transisi energi sebagai langkah strategis untuk menghadirkan <span class="text-neutral-950 border-b-2 border-lime-accent bg-lime-accent/10 px-1 font-semibold">masa depan energi yang berkelanjutan</span> bagi generasi mendatang.
+            </p>
+            <p class="text-xl font-normal text-neutral-600 leading-relaxed max-w-2xl">
+                Kami membangun ekosistem di mana kemajuan teknologi industri dan kelestarian alam berjalan beriringan.
+            </p>
+        </div>
+    </section>    
+    
+    <!-- Services slider -->
+    <section id="services" class="w-full bg-white overflow-hidden py-24 md:py-32 border-b border-neutral-200">
+        <div class="max-w-[1600px] mx-auto px-8 md:px-16 mb-16 flex justify-between items-end reveal">
+            <div>
+                <span class="text-xs tracking-wider text-neutral-900 block mb-2 uppercase">Layanan Utama</span>
+                <h2 class="text-3xl text-neutral-900 tracking-tight font-semibold">Sektor Fokus Kami</h2>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="scrollSlider('services-slider', -400)" class="p-3 border border-neutral-200 rounded-full hover:bg-neutral-900 hover:text-white transition" aria-label="Slide Left">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                </button>
+                <button onclick="scrollSlider('services-slider', 400)" class="p-3 border border-neutral-200 rounded-full hover:bg-neutral-900 hover:text-white transition" aria-label="Slide Right">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                </button>
+            </div>
+        </div>
+        
+        <div class="w-full pl-8 md:pl-[calc((100vw-80rem)/2+4rem)]">
+            <div id="services-slider" class="flex gap-8 overflow-x-auto snap-x snap-mandatory scrollbar-hide pr-8 md:pr-16 pb-8 scroll-smooth">
+                
+                <div class="w-[85vw] md:w-[450px] lg:w-[500px] shrink-0 snap-start border border-neutral-200 h-[550px] md:h-[600px] rounded-3xl flex flex-col justify-end p-10 relative overflow-hidden transition duration-500 group text-white reveal delay-100 select-none pointer-events-none">
+                    <img src="assets/solar-energy.png" alt="Solar Energy" class="absolute inset-0 w-full h-full object-cover z-0 transition duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/70 via-neutral-950/20 to-transparent z-10"></div>
+                    <div class="relative z-20 flex flex-col h-full justify-between">
+                        <span class="text-md text-white/80 tracking-wider group-hover:text-lime-accent transition">01</span>
+                        <div>
+                            <h3 class="text-2xl text-white mb-4 tracking-tight font-semibold drop-shadow-sm">Solar Energy</h3>
+                            <p class="text-base font-normal text-white/90 leading-relaxed drop-shadow-sm">Mengubah sinar matahari menjadi sumber energi bersih melalui teknologi panel surya yang efisien dan berkelanjutan.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="w-[85vw] md:w-[450px] lg:w-[500px] shrink-0 snap-start border border-neutral-200 h-[550px] md:h-[600px] rounded-3xl flex flex-col justify-end p-10 relative overflow-hidden transition duration-500 group text-white reveal delay-200 select-none pointer-events-none">
+                    <img src="assets/wind-energy.png" alt="Wind Energy" class="absolute inset-0 w-full h-full object-cover z-0 transition duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/70 via-neutral-950/20 to-transparent z-10"></div>
+                    <div class="relative z-20 flex flex-col h-full justify-between">
+                        <span class="text-md text-white/80 tracking-wider group-hover:text-lime-accent transition">02</span>
+                        <div>
+                            <h3 class="text-2xl text-white mb-4 tracking-tight font-semibold drop-shadow-sm">Wind Energy</h3>
+                            <p class="text-base font-normal text-white/90 leading-relaxed drop-shadow-sm">Memanfaatkan kekuatan angin dengan teknologi turbin modern untuk menghasilkan energi rendah emisi secara konsisten.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-[85vw] md:w-[450px] lg:w-[500px] shrink-0 snap-start border border-neutral-200 h-[550px] md:h-[600px] rounded-3xl flex flex-col justify-end p-10 relative overflow-hidden transition duration-500 group text-white reveal delay-300 select-none pointer-events-none">
+                    <img src="assets/geothermal.png" alt="Geothermal" class="absolute inset-0 w-full h-full object-cover z-0 transition duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/70 via-neutral-950/20 to-transparent z-10"></div>
+                    <div class="relative z-20 flex flex-col h-full justify-between">
+                        <span class="text-md text-white/80 tracking-wider group-hover:text-lime-accent transition">03</span>
+                        <div>
+                            <h3 class="text-2xl text-white mb-4 tracking-tight font-semibold drop-shadow-sm">Geothermal</h3>
+                            <p class="text-base font-normal text-white/90 leading-relaxed drop-shadow-sm">Mengoptimalkan potensi panas bumi sebagai sumber energi stabil, andal, dan ramah lingkungan untuk jangka panjang.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-[85vw] md:w-[450px] lg:w-[500px] shrink-0 snap-start border border-neutral-200 h-[550px] md:h-[600px] rounded-3xl flex flex-col justify-end p-10 relative overflow-hidden transition duration-500 group text-white reveal delay-400 select-none pointer-events-none">
+                    <img src="assets/hydroelectric.png" alt="Hydroelectric" class="absolute inset-0 w-full h-full object-cover z-0 transition duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/70 via-neutral-950/20 to-transparent z-10"></div>
+                    <div class="relative z-20 flex flex-col h-full justify-between">
+                        <span class="text-md text-white/80 tracking-wider group-hover:text-lime-accent transition">04</span>
+                        <div>
+                            <h3 class="text-2xl text-white mb-4 tracking-tight font-semibold drop-shadow-sm">Hydroelectric</h3>
+                            <p class="text-base font-normal text-white/90 leading-relaxed drop-shadow-sm">Menghasilkan energi terbarukan dari aliran air yang stabil untuk mendukung kebutuhan listrik yang berkelanjutan.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio stats -->
+    <section id="portfolio" class="relative py-24 md:py-32 px-6 sm:px-12 max-w-[1600px] mx-auto border-b border-neutral-200 overflow-hidden rounded-3xl bg-zinc-900 my-12 text-white reveal">
+        <img src="assets/porto.png" alt="Portfolio Background" class="absolute inset-0 w-full h-full object-cover z-0 opacity-40 transition-transform duration-1000 hover:scale-105">
+        <div class="absolute inset-0 bg-gradient-to-r from-black/10 to-black/0 z-10"></div>
+
+        <div class="relative z-20 grid lg:grid-cols-3 gap-12 items-center">
+            <div class="space-y-6 max-w-md">
+                <div>
+                    <span class="text-xs tracking-wider text-lime-accent block mb-2 uppercase">Rekam Jejak</span>
+                    <h2 class="text-3xl tracking-tight text-white font-semibold">Kapasitas & <br>Hasil Portofolio</h2>
+                </div>
+                <p class="text-md font-normal text-neutral-300 leading-relaxed">
+                    Pengembangan berkelanjutan skala besar yang tervalidasi secara internasional untuk reduksi karbon industri.
+                </p>
+                <div class="pt-2">
+                    <a href="#" class="text-md tracking-wider text-white border-b-2 border-lime-accent pb-1 hover:text-lime-accent transition duration-300">Lihat Semua Data</a>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 grid sm:grid-cols-3 gap-6 w-full">
+                <div class="border border-white/10 p-8 bg-white/5 backdrop-blur-md rounded-2xl flex flex-col justify-center min-h-[160px] shadow-lg hover:border-lime-accent/50 transition duration-300 reveal delay-100">
+                    <div class="text-4xl lg:text-5xl text-lime-accent tracking-tight font-semibold">500+ <span class="text-base text-white opacity-70 font-normal">MW</span></div>
+                    <div class="text-xs tracking-wider text-neutral-300 uppercase mt-2">Kapasitas Terpasang</div>
+                </div>
+                <div class="border border-white/10 p-8 bg-white/5 backdrop-blur-md rounded-2xl flex flex-col justify-center min-h-[160px] shadow-lg hover:border-lime-accent/50 transition duration-300 reveal delay-200">
+                    <div class="text-4xl lg:text-5xl text-lime-accent tracking-tight font-semibold">1.2M <span class="text-base text-white opacity-70 font-normal">Ton</span></div>
+                    <div class="text-xs tracking-wider text-neutral-300 uppercase mt-2">Reduksi Emisi CO₂</div>
+                </div>
+                <div class="border border-white/10 p-8 bg-white/5 backdrop-blur-md rounded-2xl flex flex-col justify-center min-h-[160px] shadow-lg hover:border-lime-accent/50 transition duration-300 reveal delay-300">
+                    <div class="text-4xl lg:text-5xl text-lime-accent tracking-tight font-semibold">100%</div>
+                    <div class="text-xs tracking-wider text-neutral-300 uppercase mt-2">Energi Terbarukan</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials -->
+    <section class="py-24 md:py-32 px-6 sm:px-12 max-w-[1600px] mx-auto border-b border-neutral-200 bg-neutral-50 rounded-3xl reveal overflow-hidden">
+        <div class="grid md:grid-cols-4 gap-8 items-start relative">
+            <div class="md:col-span-1 flex flex-col h-full justify-between gap-6">
+                <div>
+                    <span class="text-xs tracking-wider text-neutral-900 block mb-2 uppercase">Kemitraan</span>
+                    <h2 class="text-2xl tracking-tight text-neutral-900 font-semibold">Apa Kata Mitra</h2>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="prevQuote()" class="p-2.5 border border-neutral-300 rounded-full hover:bg-neutral-900 hover:text-white transition" aria-label="Quote Sebelumnya">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" /></svg>
+                    </button>
+                    <button onclick="nextQuote()" class="p-2.5 border border-neutral-300 rounded-full hover:bg-neutral-900 hover:text-white transition" aria-label="Quote Selanjutnya">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="md:col-span-3 border-l-4 border-neutral-900 pl-6 md:pl-12 relative min-h-[220px] md:min-h-[180px] overflow-hidden">
+                <div id="quote-container" class="relative w-full h-full">
+                    <div class="quote-slide transition-all duration-1000 transform opacity-100 translate-x-0 static">
+                        <p class="text-xl font-medium text-neutral-800 italic leading-relaxed">
+                            "Kolaborasi bersama Asri Energy membantu kami meningkatkan efisiensi energi operasional secara signifikan sekaligus memperkuat pencapaian target keberlanjutan perusahaan."
+                        </p>
+                        <div class="mt-6">
+                            <span class="text-md text-neutral-900 block font-semibold">Budi Santoso</span>
+                            <span class="text-sm text-neutral-500 font-normal">Direktur Operasional — PT Manufaktur Hijau Nusantara</span>
+                        </div>
+                    </div>
+                    <div class="quote-slide transition-all duration-1000 transform opacity-0 translate-x-12 absolute inset-0 pointer-events-none">
+                        <p class="text-xl font-medium text-neutral-800 italic leading-relaxed">
+                            "Pendekatan teknis dan standar implementasi yang diterapkan Asri Energy memberikan performa sistem yang stabil, efisien, dan sesuai dengan kebutuhan infrastruktur kami."
+                        </p>
+                        <div class="mt-6">
+                            <span class="text-md text-neutral-900 block font-semibold">Ratna Kusuma Dewi</span>
+                            <span class="text-sm text-neutral-500 font-normal">VP of Sustainability — Megah Infrastruktur Group</span>
+                        </div>
+                    </div>
+                    <div class="quote-slide transition-all duration-1000 transform opacity-0 translate-x-12 absolute inset-0 pointer-events-none">
+                        <p class="text-xl font-medium text-neutral-800 italic leading-relaxed">
+                            "Asri Energy menghadirkan solusi energi berkelanjutan yang terukur, transparan, dan mampu mendukung strategi transformasi jangka panjang perusahaan kami."
+                        </p>
+                        <div class="mt-6">
+                            <span class="text-md text-neutral-900 block font-semibold">Jonathan Halim</span>
+                            <span class="text-sm text-neutral-500 font-normal">Chief Executive Officer — EcoLogistics Indonesia</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-24 md:py-32 px-6 sm:px-12 max-w-[1600px] mx-auto border-b border-neutral-200 reveal">
+        <div class="grid lg:grid-cols-3 gap-12">
+            <div>
+                <span class="text-xs tracking-wider text-neutral-900 block mb-2 uppercase">Pertanyaan Umum</span>
+                <h2 class="text-3xl tracking-tight text-neutral-900 font-semibold mb-6">Tanya & Jawab</h2>
+                <p class="text-sm text-neutral-600 hidden lg:block">Klik pada pertanyaan untuk melihat jawaban lengkap dari tim ahli kami.</p>
+            </div>
+            
+            <div class="lg:col-span-2 space-y-4">
+                <div class="faq-item border border-neutral-200 rounded-2xl overflow-hidden transition-all duration-300 bg-white">
+                    <button onclick="toggleFaq(this)" class="w-full flex justify-between items-center p-6 text-left focus:outline-none transition-colors duration-300 hover:bg-neutral-50 group">
+                        <h3 class="faq-question text-lg text-neutral-900 font-semibold pr-4 transition-colors duration-300">Bagaimana Asri Energy mengukur reduksi karbon?</h3>
+                        <div class="faq-icon flex items-center justify-center w-10 h-10 rounded-xl bg-neutral-100 text-neutral-900 transition-all duration-300 shrink-0 group-hover:bg-neutral-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </button>
+                    <div class="faq-answer max-h-0 opacity-0 transition-all duration-300 ease-in-out">
+                        <div class="p-6 pt-0 border-t border-neutral-100 mt-4">
+                            <p class="text-base font-normal text-neutral-700 leading-relaxed">Kami menyediakan dasbor analitik real-time berbasis standar emisi internasional untuk menghitung volume karbon yang berhasil ditekan oleh sistem energi Anda.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item border border-neutral-200 rounded-2xl overflow-hidden transition-all duration-300 bg-white">
+                    <button onclick="toggleFaq(this)" class="w-full flex justify-between items-center p-6 text-left focus:outline-none transition-colors duration-300 hover:bg-neutral-50 group">
+                        <h3 class="faq-question text-lg text-neutral-900 font-semibold pr-4 transition-colors duration-300">Apakah solusi ini bisa diterapkan pada skala manufaktur besar?</h3>
+                        <div class="faq-icon flex items-center justify-center w-10 h-10 rounded-xl bg-neutral-100 text-neutral-900 transition-all duration-300 shrink-0 group-hover:bg-neutral-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </button>
+                    <div class="faq-answer max-h-0 opacity-0 transition-all duration-300 ease-in-out">
+                        <div class="p-6 pt-0 border-t border-neutral-100 mt-4">
+                            <p class="text-base font-normal text-neutral-700 leading-relaxed">Ya, spesialisasi utama kami adalah merancang dan mengintegrasikan infrastruktur energi terbarukan grid-scale untuk kawasan industri dan pabrik.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item border border-neutral-200 rounded-2xl overflow-hidden transition-all duration-300 bg-white">
+                    <button onclick="toggleFaq(this)" class="w-full flex justify-between items-center p-6 text-left focus:outline-none transition-colors duration-300 hover:bg-neutral-50 group">
+                        <h3 class="faq-question text-lg text-neutral-900 font-semibold pr-4 transition-colors duration-300">Berapa lama durasi pemeliharaan sistem infrastruktur?</h3>
+                        <div class="faq-icon flex items-center justify-center w-10 h-10 rounded-xl bg-neutral-100 text-neutral-900 transition-all duration-300 shrink-0 group-hover:bg-neutral-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </button>
+                    <div class="faq-answer max-h-0 opacity-0 transition-all duration-300 ease-in-out">
+                        <div class="p-6 pt-0 border-t border-neutral-100 mt-4">
+                            <p class="text-base font-normal text-neutral-700 leading-relaxed">Kami menawarkan paket pemeliharaan berkala penuh dan pemantauan sistem otomatis 24/7 guna memastikan efisiensi daya tetap optimal.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News slider -->
+    <section id="news" class="w-full bg-white py-24 md:py-32 overflow-hidden border-b border-neutral-200">
+        <div class="max-w-[1600px] mx-auto px-8 md:px-16 mb-16 flex items-end justify-between reveal">
+            <div>
+                <span class="text-xs tracking-wider text-neutral-900 block mb-2 uppercase">Dapatkan Update</span>
+                <h2 class="text-3xl text-neutral-900 tracking-tight font-semibold">Berita Terkini</h2>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex gap-2">
+                    <button onclick="scrollSlider('news-slider', -380)" class="p-2.5 border border-neutral-200 rounded-full hover:bg-neutral-900 hover:text-white transition" aria-label="Slide Left">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                    </button>
+                    <button onclick="scrollSlider('news-slider', 380)" class="p-2.5 border border-neutral-200 rounded-full hover:bg-neutral-900 hover:text-white transition" aria-label="Slide Right">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                    </button>
+                </div>
+                <a href="#" class="text-md tracking-wider text-neutral-900 hover:text-neutral-600 transition flex items-center gap-2 border-b-2 border-neutral-900 pb-1 shrink-0">
+                    Lihat Semua
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="w-full pl-8 md:pl-[calc((100vw-80rem)/2+4rem)]">
+            <div id="news-slider" class="flex gap-8 overflow-x-auto snap-x snap-mandatory scrollbar-hide pr-8 md:pr-16 pb-8 scroll-smooth">
+                
+                <div class="w-[80vw] md:w-[380px] lg:w-[420px] shrink-0 snap-start group cursor-pointer border border-transparent hover:border-neutral-200 p-4 rounded-3xl transition duration-300 reveal delay-100">
+                    <div class="overflow-hidden rounded-2xl bg-neutral-100 border-2 border-neutral-200 aspect-[4/3] mb-6 flex items-center justify-center group-hover:border-neutral-900 transition duration-300">
+                        <img src="assets/visual-1.png" alt="Berita 01" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    </div>
+                    <div class="flex items-center gap-4 text-xs mb-3">
+                        <span class="text-neutral-900 tracking-wider uppercase text-[10px] bg-lime-accent/40 px-2 py-0.5 rounded font-semibold">Solar Energy</span>
+                    </div>
+                    <h3 class="text-lg text-neutral-900 leading-snug tracking-tight mb-3 group-hover:text-neutral-600 transition line-clamp-2 min-h-[56px] font-semibold">Asri Energy Resmi Rampungkan Proyek PLTS Atap 50 MW di Koridor Industri</h3>
+                    <p class="text-neutral-700 text-md font-normal leading-relaxed mb-4 line-clamp-2">Langkah strategis ini berhasil memangkas emisi karbon operasional pabrik hingga 35% sekaligus menjadi role model.</p>
+                    <span class="text-xs tracking-wider text-neutral-900 group-hover:text-neutral-600 flex items-center gap-1">Baca Selengkapnya →</span>
+                </div>
+
+                <div class="w-[80vw] md:w-[380px] lg:w-[420px] shrink-0 snap-start group cursor-pointer p-4 rounded-3xl border border-transparent hover:border-neutral-200 transition duration-300 reveal delay-200">
+                    <div class="overflow-hidden rounded-2xl bg-neutral-100 border-2 border-neutral-200 aspect-[4/3] mb-6 flex items-center justify-center group-hover:border-neutral-900 transition duration-300">
+                        <img src="assets/visual-2.png" alt="Berita 02" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    </div>
+                    <div class="flex items-center gap-4 text-xs mb-3">
+                        <span class="text-neutral-900 tracking-wider uppercase text-[10px] bg-lime-accent/40 px-2 py-0.5 rounded font-semibold">Wind Power</span>
+                    </div>
+                    <h3 class="text-lg text-neutral-900 leading-snug tracking-tight mb-3 group-hover:text-neutral-600 transition line-clamp-2 min-h-[56px] font-semibold">Eksplorasi Potensi Angin Pesisir: Turbin Lepas Pantai Mulai Dilirik</h3>
+                    <p class="text-neutral-700 text-md font-normal leading-relaxed mb-4 line-clamp-2">Studi kelayakan terbaru menunjukkan wilayah pesisir selatan memiliki stabilitas angin yang konstan untuk menyuplai daya.</p>
+                    <span class="text-xs tracking-wider text-neutral-900 group-hover:text-neutral-600 flex items-center gap-1">Baca Selengkapnya →</span>
+                </div>
+
+                <div class="w-[80vw] md:w-[380px] lg:w-[420px] shrink-0 snap-start group cursor-pointer p-4 rounded-3xl border border-transparent hover:border-neutral-200 transition duration-300 reveal delay-300">
+                    <div class="overflow-hidden rounded-2xl bg-neutral-100 border-2 border-neutral-200 aspect-[4/3] mb-6 flex items-center justify-center group-hover:border-neutral-900 transition duration-300">
+                        <img src="assets/visual-3.png" alt="Berita 03" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    </div>
+                    <div class="flex items-center gap-4 text-xs mb-3">
+                        <span class="text-neutral-900 tracking-wider uppercase text-[10px] bg-lime-accent/40 px-2 py-0.5 rounded font-semibold">Inovasi</span>
+                    </div>
+                    <h3 class="text-lg text-neutral-900 leading-snug tracking-tight mb-3 group-hover:text-neutral-600 transition line-clamp-2 min-h-[56px] font-semibold">Integrasi AI IoT untuk Optimalisasi Efisiensi Beban Daya Grid Listrik</h3>
+                    <p class="text-neutral-700 text-md font-normal leading-relaxed mb-4 line-clamp-2">Penerapan algoritma machine learning membantu memprediksi lonjakan beban dan mengalokasikan penyimpanan baterai.</p>
+                    <span class="text-xs tracking-wider text-neutral-900 group-hover:text-neutral-600 flex items-center gap-1">Baca Selengkapnya →</span>
+                </div>
+
+                <div class="w-[80vw] md:w-[380px] lg:w-[420px] shrink-0 snap-start group cursor-pointer p-4 rounded-3xl border border-transparent hover:border-neutral-200 transition duration-300 reveal delay-400">
+                    <div class="overflow-hidden rounded-2xl bg-neutral-100 border-2 border-neutral-200 aspect-[4/3] mb-6 flex items-center justify-center group-hover:border-neutral-900 transition duration-300">
+                        <img src="assets/visual-4.png" alt="Berita 04" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    </div>
+                    <div class="flex items-center gap-4 text-xs mb-3">
+                        <span class="text-neutral-900 tracking-wider uppercase text-[10px] bg-lime-accent/40 px-2 py-0.5 rounded font-semibold">Geothermal</span>
+                    </div>
+                    <h3 class="text-lg text-neutral-900 leading-snug tracking-tight mb-3 group-hover:text-neutral-600 transition line-clamp-2 min-h-[56px] font-semibold">Sektor Panas Bumi Jadi Jangkar Utama Beban Dasar Energi Hijau</h3>
+                    <p class="text-neutral-700 text-md font-normal leading-relaxed mb-4 line-clamp-2">Berbeda dengan solar dan wind yang intermiten, panas bumi terus membuktikan keandalannya sebagai tulang punggung pasokan.</p>
+                    <span class="text-xs tracking-wider text-neutral-900 group-hover:text-neutral-600 flex items-center gap-1">Baca Selengkapnya →</span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="bg-neutral-50 py-24 md:py-32 px-6 sm:px-12 max-w-[1600px] mx-auto grid lg:grid-cols-12 gap-12 items-center rounded-3xl my-8 border border-neutral-200/60 reveal">
+        <div class="space-y-6 lg:col-span-5 max-w-md lg:pr-6">
+            <div>
+                <span class="text-xs tracking-wider text-neutral-900 block mb-2 uppercase">Kolaborasi</span>
+                <h2 class="text-4xl tracking-tight text-neutral-900 leading-tight font-semibold">
+                    Mulailah Transisi <br><span class="text-neutral-600 font-normal">Energi Anda.</span>
+                </h2>
+            </div>
+            <p class="text-base font-normal text-neutral-700 leading-relaxed">
+                Siap melangkah ke solusi keberlanjutan? Hubungi tim ahli kami untuk konsultasi infrastruktur energi terbarukan gratis.
+            </p>
+            <div class="pt-6 space-y-4 text-md text-neutral-800 border-t-2 border-neutral-200">
+                <p><span>Email:</span> hello@asrirenewable.com</p>
+                <p><span>Telepon:</span> +62 21 8932 3920</p>
+                <p><span>Alamat:</span> Sudirman Central Business District, Jakarta, Indonesia</p>
+            </div>
+        </div>
+
+        <div class="lg:col-span-7 bg-white p-8 sm:p-10 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.03)] border border-neutral-200/80">
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold text-neutral-900 tracking-tight">Formulir Konsultasi</h3>
+                <p class="text-sm text-neutral-600 mt-1">Silakan isi detail di bawah ini dan tim kami akan segera menghubungi Anda.</p>
+            </div>
+            <form id="contactForm" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" placeholder="Nama depan" required class="w-full text-md font-normal bg-neutral-50 border-2 border-neutral-200 px-4 py-3.5 text-neutral-900 focus:outline-none focus:border-neutral-900 rounded-2xl placeholder-neutral-400 transition-colors">
+                    <input type="text" placeholder="Nama belakang" class="w-full text-md font-normal bg-neutral-50 border-2 border-neutral-200 px-4 py-3.5 text-neutral-900 focus:outline-none focus:border-neutral-900 rounded-2xl placeholder-neutral-400 transition-colors">
+                </div>
+                <input type="email" placeholder="Alamat email korporat" required class="w-full text-md font-normal bg-neutral-50 border-2 border-neutral-200 px-4 py-3.5 text-neutral-900 focus:outline-none focus:border-neutral-900 rounded-2xl placeholder-neutral-400 transition-colors">
+                <textarea placeholder="Pesan anda mengenai rencana proyek..." rows="4" required class="w-full text-md font-normal bg-neutral-50 border-2 border-neutral-200 px-4 py-3.5 text-neutral-900 focus:outline-none focus:border-neutral-900 rounded-2xl resize-none placeholder-neutral-400 transition-colors"></textarea>
+                <button type="submit" class="w-full text-md tracking-wide bg-neutral-900 text-white py-4 rounded-2xl hover:bg-neutral-800 focus:bg-lime-accent focus:text-neutral-900 transition shadow-md font-semibold">
+                    Kirim Pesan
+                </button>
+            </form>
+            <div id="formSuccess" class="hidden text-md text-neutral-900 mt-4 bg-lime-accent/20 border border-lime-accent/50 p-4 rounded-xl">Pesan Anda berhasil dikirim. Kami akan membalas dalam 1x24 jam kerja.</div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-b from-neutral-900 to-neutral-950 text-neutral-400 pt-20 pb-12 px-6 sm:px-12 border-t border-neutral-800">
+        <div class="max-w-[1600px] mx-auto grid grid-cols-2 md:grid-cols-5 gap-12 text-sm">
+            <div class="col-span-2 space-y-4">
+                <h3 class="text-white tracking-wide text-3xl font-semibold flex items-center">
+                    <img src="assets/icon.svg" alt="Icon" class="w-8 h-8 invert mr-2">
+                    Asri Energy<span class="text-lime-accent">.</span>
+                </h3>
+                <p class="font-normal text-neutral-400 max-w-xs leading-relaxed">Membangun ekosistem di mana kemajuan teknologi industri dan kelestarian alam berjalan beriringan.</p>
+            </div>
+            <div>
+                <h4 class="text-white tracking-wide mb-4 text-xs uppercase opacity-80 font-semibold">Layanan</h4>
+                <ul class="space-y-3 font-normal">
+                    <li><a href="#" class="hover:text-lime-accent transition-colors duration-200">Solar Panel</a></li>
+                    <li><a href="#" class="hover:text-lime-accent transition-colors duration-200">Wind Turbine</a></li>
+                    <li><a href="#" class="hover:text-lime-accent transition-colors duration-200">Geothermal</a></li>
+                    <li><a href="#" class="hover:text-lime-accent transition-colors duration-200">Hydroelectric</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white tracking-wide mb-4 text-xs uppercase opacity-80 font-semibold">Perusahaan</h4>
+                <ul class="space-y-3 font-normal">
+                    <li><a href="#" class="hover:text-lime-accent transition-colors duration-200">Tentang Kami</a></li>
+                    <li><a href="#" class="hover:text-lime-accent transition-colors duration-200">Portofolio</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white tracking-wide mb-4 text-xs uppercase opacity-80 font-semibold">Alamat</h4>
+                <ul class="space-y-3 font-normal text-neutral-400 leading-relaxed">
+                    <li class="text-white/90">Sudirman Central Business District, <br>Jakarta, Indonesia</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="max-w-[1600px] mx-auto mt-16 pt-8 border-t border-neutral-800 flex flex-col md:flex-row justify-between items-center text-xs text-neutral-500 gap-4">
+            <p>&copy; 2026 Asri Energy - Landing Page.</p>
+            <p>Made by <a href="https://github.com/mrezadit" target="_blank" rel="noopener noreferrer" class="text-lime-accent hover:underline">mrezadit</a></p>
+        </div>
+    </footer>
+
+    <style>
+        @keyframes fade-up {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes subtle-zoom {
+            to { transform: scale(1); }
+        }
+    </style>
+
+    <script>
+        // Navbar scroll state
+        const nav = document.getElementById('mainNav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('nav-scrolled', window.scrollY > 50);
+        });
+
+        // Slider scroll helper
+        function scrollSlider(sliderId, offset) {
+            document.getElementById(sliderId).scrollBy({ left: offset, behavior: 'smooth' });
+        }
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+            document.body.style.overflow = menu.classList.contains('hidden') ? '' : 'hidden';
+        }
+
+        // Scroll reveal
+        document.addEventListener("DOMContentLoaded", function () {
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("active");
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            document.querySelectorAll(".reveal, .reveal-left").forEach(el => observer.observe(el));
+        });
+
+        // FAQ accordion
+        function toggleFaq(button) {
+            const currentItem = button.parentElement;
+            const currentAnswer = currentItem.querySelector('.faq-answer');
+            const currentIcon = currentItem.querySelector('.faq-icon');
+            const currentSvg = currentIcon.querySelector('svg');
+            const currentQuestion = currentItem.querySelector('.faq-question');
+
+            document.querySelectorAll('.faq-item').forEach(item => {
+                if (item !== currentItem) {
+                    item.classList.remove('border-neutral-900', 'shadow-md');
+                    item.querySelector('.faq-answer').style.maxHeight = null;
+                    item.querySelector('.faq-answer').classList.add('opacity-0');
+                    item.querySelector('.faq-icon').classList.replace('bg-lime-accent', 'bg-neutral-100');
+                    item.querySelector('.faq-icon svg').classList.remove('rotate-180');
+                    item.querySelector('.faq-question').classList.remove('text-neutral-950');
+                }
+            });
+
+            if (currentAnswer.style.maxHeight) {
+                currentAnswer.style.maxHeight = null;
+                currentAnswer.classList.add('opacity-0');
+                currentItem.classList.remove('border-neutral-900', 'shadow-md');
+                currentIcon.classList.replace('bg-lime-accent', 'bg-neutral-100');
+                currentSvg.classList.remove('rotate-180');
+                currentQuestion.classList.remove('text-neutral-950');
+            } else {
+                currentAnswer.style.maxHeight = currentAnswer.scrollHeight + "px";
+                currentAnswer.classList.remove('opacity-0');
+                currentItem.classList.add('border-neutral-900', 'shadow-md');
+                currentIcon.classList.replace('bg-neutral-100', 'bg-lime-accent');
+                currentSvg.classList.add('rotate-180');
+                currentQuestion.classList.add('text-neutral-950');
+            }
+        }
+
+        // Testimonial slider
+        let currentQuoteIndex = 0;
+        const quotes = document.querySelectorAll('.quote-slide');
+        let quoteInterval;
+
+        function showQuote(index) {
+            quotes.forEach((q, i) => {
+                if (i === index) {
+                    q.classList.remove('opacity-0', 'translate-x-12', 'absolute', 'pointer-events-none');
+                    q.classList.add('opacity-100', 'translate-x-0', 'static');
+                } else {
+                    q.classList.remove('opacity-100', 'translate-x-0', 'static');
+                    q.classList.add('opacity-0', 'translate-x-12', 'absolute', 'pointer-events-none');
+                }
+            });
+        }
+
+        function nextQuote() {
+            currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+            showQuote(currentQuoteIndex);
+            resetQuoteTimer();
+        }
+
+        function prevQuote() {
+            currentQuoteIndex = (currentQuoteIndex - 1 + quotes.length) % quotes.length;
+            showQuote(currentQuoteIndex);
+            resetQuoteTimer();
+        }
+
+        function resetQuoteTimer() {
+            clearInterval(quoteInterval);
+            quoteInterval = setInterval(nextQuote, 9000);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => resetQuoteTimer());
+    </script>
+</body>
+</html>
